@@ -33,7 +33,15 @@ namespace FFMpegCore.FFMPEG.Argument
         /// <returns>String representation of the argument</returns>
         public override string GetStringValue()
         {
-            return ArgumentStringifier.Video(Value, Bitrate);
+            if (Value != VideoCodec.h264_cuvid)
+            {
+                return ArgumentStringifier.Video(Value, Bitrate);
+            }
+            else
+            {
+                return ArgumentStringifier.HWVideo(VideoCodec.h264_cuvid);
+            }
+            
         }
     }
 }

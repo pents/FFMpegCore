@@ -43,6 +43,13 @@ namespace FFMpegCore.FFMPEG.Argument
             return $"-b:a {bitrate}k -strict experimental ";
         }
 
+        internal static string HWVideo(VideoCodec codec)
+        {
+            var video = $"-c:v {codec.ToString().ToLower()} ";
+
+            return video;
+        }
+
         internal static string Video(VideoCodec codec, int bitrate = 0)
         {
             var video = $"-codec:v {codec.ToString().ToLower()} -pix_fmt yuv420p ";
@@ -53,6 +60,11 @@ namespace FFMpegCore.FFMPEG.Argument
             }
 
             return video;
+        }
+
+        internal static string HWAccel()
+        {
+            return "-hwaccel cuvid ";
         }
 
         internal static string Threads(bool multiThread)

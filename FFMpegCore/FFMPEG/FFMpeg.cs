@@ -1,5 +1,6 @@
 ﻿using FFMpegCore.Enums;
 using FFMpegCore.FFMPEG.Argument;
+using FFMpegCore.FFMPEG.Argument.Atoms;
 using FFMpegCore.FFMPEG.Enums;
 using FFMpegCore.FFMPEG.Exceptions;
 using FFMpegCore.Helpers;
@@ -159,6 +160,18 @@ namespace FFMpegCore.FFMPEG
 
             switch (type)
             {
+                case VideoType.HWMP4:
+                        container.Add(
+                        new HWAccelArgument(),
+                        new VideoCodecArgument(VideoCodec.h264_cuvid, 2400),
+                        new InputArgument(source),
+                        new VideoCodecArgument(VideoCodec.h264_nvenc, 2400),
+                        new ThreadsArgument(false),
+                        new ScaleArgument(outputSize),
+                        new AudioCodecArgument(AudioCodec.Aac, audioQuality),
+                        new OutputArgument(output)
+                    );
+                    break;
                 case VideoType.Mp4:
                     container.Add(
                         new InputArgument(source),

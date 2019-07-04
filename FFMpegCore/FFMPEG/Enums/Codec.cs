@@ -6,7 +6,9 @@
         LibVpx,
         LibTheora,
         Png,
-        MpegTs
+        MpegTs,
+        h264_cuvid,
+        h264_nvenc
     }
 
     public enum AudioCodec
