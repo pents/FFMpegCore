@@ -20,8 +20,8 @@ namespace FFMpegCore.FFMPEG.Argument
         {
             if (!container.ContainsInputOutput())
                 throw new ArgumentException("No input or output parameter found", nameof(container));
-            
 
+            Console.WriteLine(string.Join(" ", container.Select(argument => argument.Value.GetStringValue().Trim())));
             return string.Join(" ", container.Select(argument => argument.Value.GetStringValue().Trim()));
         }
 

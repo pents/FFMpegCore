@@ -10,6 +10,36 @@ namespace FFMpegCore.FFMPEG.Argument
     /// <summary>
     /// Represents video codec parameter
     /// </summary>
+    public class VideoEncoderArgument : Argument<VideoCodec>
+    {
+        public int Bitrate { get; protected set; } = 0;
+
+        public VideoEncoderArgument()
+        {
+        }
+
+        public VideoEncoderArgument(VideoCodec value) : base(value)
+        {
+        }
+
+        public VideoEncoderArgument(VideoCodec value, int bitrate) : base(value)
+        {
+            Bitrate = bitrate;
+        }
+
+        /// <summary>
+        /// String representation of the argument
+        /// </summary>
+        /// <returns>String representation of the argument</returns>
+        public override string GetStringValue()
+        {
+            return ArgumentStringifier.HWVideo(Value);
+        }
+    }
+
+    /// <summary>
+    /// Represents video codec parameter
+    /// </summary>
     public class VideoCodecArgument : Argument<VideoCodec>
     {
         public int Bitrate { get; protected set; } = 0;

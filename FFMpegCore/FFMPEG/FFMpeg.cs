@@ -163,9 +163,8 @@ namespace FFMpegCore.FFMPEG
                 case VideoType.HWMP4:
                         container.Add(
                         new HWAccelArgument(),
-                        new VideoCodecArgument(VideoCodec.h264_cuvid, 2400),
                         new InputArgument(source),
-                        new VideoCodecArgument(VideoCodec.h264_nvenc, 2400),
+                        new VideoEncoderArgument(VideoCodec.h264_nvenc, 2400),
                         new ThreadsArgument(false),
                         new ScaleArgument(outputSize),
                         new AudioCodecArgument(AudioCodec.Aac, audioQuality),

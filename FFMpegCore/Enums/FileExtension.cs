@@ -21,7 +21,6 @@ namespace FFMpegCore.Enums
         {
             switch (type)
             {
-                case VideoCodec.h264_cuvid: return Mp4;
                 case VideoCodec.h264_nvenc: return Mp4;
                 case VideoCodec.LibX264: return Mp4;
                 case VideoCodec.LibVpx: return WebM;
