@@ -43,9 +43,16 @@ namespace FFMpegCore.FFMPEG.Argument
             return $"-b:a {bitrate}k -strict experimental ";
         }
 
-        internal static string HWVideo(VideoCodec codec)
+        internal static string NVVideo(VideoCodec codec)
         {
             var video = $"-c:v {codec.ToString().ToLower()} ";
+
+            return video;
+        }
+
+        internal static string IntelVideo(VideoCodec codec)
+        {
+            var video = $"-vcodec {codec.ToString().ToLower()} ";
 
             return video;
         }

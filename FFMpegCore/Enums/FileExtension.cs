@@ -9,7 +9,6 @@ namespace FFMpegCore.Enums
         {
             switch (type)
             {
-                case VideoType.HWMP4: return Mp4;
                 case VideoType.Mp4: return Mp4;
                 case VideoType.Ogv: return Ogv;
                 case VideoType.Ts: return Ts;
@@ -22,12 +21,13 @@ namespace FFMpegCore.Enums
             switch (type)
             {
                 case VideoCodec.h264_nvenc: return Mp4;
+                case VideoCodec.h264_qsv: return Mp4;
                 case VideoCodec.LibX264: return Mp4;
                 case VideoCodec.LibVpx: return WebM;
                 case VideoCodec.LibTheora: return Ogv;
                 case VideoCodec.MpegTs: return Ts;
                 case VideoCodec.Png: return Png;
-                default: throw new Exception("The extension for this video type is not defined.");
+                default: throw new Exception("The extension for this video CODEC is not defined.");
             }
         }
         public static readonly string Mp4 = ".mp4";

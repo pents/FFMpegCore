@@ -7,8 +7,8 @@
         LibTheora,
         Png,
         MpegTs,
-        h264_cuvid,
-        h264_nvenc
+        h264_nvenc,
+        h264_qsv
     }
 
     public enum AudioCodec

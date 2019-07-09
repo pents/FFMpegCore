@@ -8,21 +8,51 @@ using System.Threading.Tasks;
 namespace FFMpegCore.FFMPEG.Argument
 {
     /// <summary>
-    /// Represents video codec parameter
+    /// Represents video codec parameter for NVIDIA hardware processing
     /// </summary>
-    public class VideoEncoderArgument : Argument<VideoCodec>
+    public class VideoNVCodecArgument : Argument<VideoCodec>
     {
         public int Bitrate { get; protected set; } = 0;
 
-        public VideoEncoderArgument()
+        public VideoNVCodecArgument()
         {
         }
 
-        public VideoEncoderArgument(VideoCodec value) : base(value)
+        public VideoNVCodecArgument(VideoCodec value) : base(value)
         {
         }
 
-        public VideoEncoderArgument(VideoCodec value, int bitrate) : base(value)
+        public VideoNVCodecArgument(VideoCodec value, int bitrate) : base(value)
+        {
+            Bitrate = bitrate;
+        }
+
+        /// <summary>
+        /// String representation of the argument for intel hardware proccessing
+        /// </summary>
+        /// <returns>String representation of the argument</returns>
+        public override string GetStringValue()
+        {
+            return ArgumentStringifier.NVVideo(Value);
+        }
+    }
+
+    /// <summary>
+    /// Represents video codec parameter
+    /// </summary>
+    public class VideoIntelCodecArgument : Argument<VideoCodec>
+    {
+        public int Bitrate { get; protected set; } = 0;
+
+        public VideoIntelCodecArgument()
+        {
+        }
+
+        public VideoIntelCodecArgument(VideoCodec value) : base(value)
+        {
+        }
+
+        public VideoIntelCodecArgument(VideoCodec value, int bitrate) : base(value)
         {
             Bitrate = bitrate;
         }
@@ -33,7 +63,7 @@ namespace FFMpegCore.FFMPEG.Argument
         /// <returns>String representation of the argument</returns>
         public override string GetStringValue()
         {
-            return ArgumentStringifier.HWVideo(Value);
+            return ArgumentStringifier.IntelVideo(Value);
         }
     }
 
@@ -63,15 +93,7 @@ namespace FFMpegCore.FFMPEG.Argument
         /// <returns>String representation of the argument</returns>
         public override string GetStringValue()
         {
-            if (Value != VideoCodec.h264_cuvid)
-            {
-                return ArgumentStringifier.Video(Value, Bitrate);
-            }
-            else
-            {
-                return ArgumentStringifier.HWVideo(VideoCodec.h264_cuvid);
-            }
-            
+            return ArgumentStringifier.Video(Value, Bitrate);  
         }
     }
 }

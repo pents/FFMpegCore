@@ -129,11 +129,10 @@ namespace FFMpegCore.FFMPEG
         public VideoInfo Convert(
             VideoInfo source,
             FileInfo output,
+            EncoderType encoderType = EncoderType.Software,
             VideoType type = VideoType.Mp4,
-            Speed speed =
-            Speed.SuperFast,
-            VideoSize size =
-            VideoSize.Original,
+            Speed speed = Speed.SuperFast,
+            VideoSize size = VideoSize.Original,
             AudioQuality audioQuality = AudioQuality.Normal,
             bool multithreaded = false)
         {
@@ -157,52 +156,92 @@ namespace FFMpegCore.FFMPEG
             }
 
             var container = new ArgumentContainer();
-
-            switch (type)
+            switch(encoderType)
             {
-                case VideoType.HWMP4:
-                        container.Add(
-                        new HWAccelArgument(),
-                        new InputArgument(source),
-                        new VideoEncoderArgument(VideoCodec.h264_nvenc, 2400),
-                        new ThreadsArgument(false),
-                        new ScaleArgument(outputSize),
-                        new AudioCodecArgument(AudioCodec.Aac, audioQuality),
-                        new OutputArgument(output)
-                    );
-                    break;
-                case VideoType.Mp4:
-                    container.Add(
-                        new InputArgument(source),
-                        new ThreadsArgument(multithreaded),
-                        new ScaleArgument(outputSize),
-                        new VideoCodecArgument(VideoCodec.LibX264, 2400),
-                        new SpeedArgument(speed),
-                        new AudioCodecArgument(AudioCodec.Aac, audioQuality),
-                        new OutputArgument(output)
-                    );
-                    break;
-                case VideoType.Ogv:
-                    container.Add(
-                        new InputArgument(source),
-                        new ThreadsArgument(multithreaded),
-                        new ScaleArgument(outputSize),
-                        new VideoCodecArgument(VideoCodec.LibTheora, 2400),
-                        new SpeedArgument(speed),
-                        new AudioCodecArgument(AudioCodec.LibVorbis, audioQuality),
-                        new OutputArgument(output)
-                    );
-                    break;
-                case VideoType.Ts:
-                    container.Add(
-                        new InputArgument(source),
-                        new CopyArgument(),
-                        new BitStreamFilterArgument(Channel.Video, Filter.H264_Mp4ToAnnexB),
-                        new ForceFormatArgument(VideoCodec.MpegTs),
-                        new OutputArgument(output)
-                    );
-                    break;
+                case EncoderType.Software:
+                    {
+                        switch (type)
+                        {
+                            case VideoType.Mp4:
+                                container.Add(
+                                    new InputArgument(source),
+                                    new ThreadsArgument(multithreaded),
+                                    new ScaleArgument(outputSize),
+                                    new VideoCodecArgument(VideoCodec.LibX264, 2400),
+                                    new SpeedArgument(speed),
+                                    new AudioCodecArgument(AudioCodec.Aac, audioQuality),
+                                    new OutputArgument(output)
+                                );
+                                break;
+                            case VideoType.Ogv:
+                                container.Add(
+                                    new InputArgument(source),
+                                    new ThreadsArgument(multithreaded),
+                                    new ScaleArgument(outputSize),
+                                    new VideoCodecArgument(VideoCodec.LibTheora, 2400),
+                                    new SpeedArgument(speed),
+                                    new AudioCodecArgument(AudioCodec.LibVorbis, audioQuality),
+                                    new OutputArgument(output)
+                                );
+                                break;
+                            case VideoType.Ts:
+                                container.Add(
+                                    new InputArgument(source),
+                                    new CopyArgument(),
+                                    new BitStreamFilterArgument(Channel.Video, Filter.H264_Mp4ToAnnexB),
+                                    new ForceFormatArgument(VideoCodec.MpegTs),
+                                    new OutputArgument(output)
+                                );
+                                break;
+                            default:
+                                throw new NotImplementedException("This type is not supported yet");
+                        }
+                        break;
+                    }
+                case EncoderType.Hardware_NVIDIA:
+                    {
+                        switch(type)
+                        {
+                            case VideoType.Mp4:
+                                container.Add(
+                                    new HWAccelArgument(),
+                                    new InputArgument(source),
+                                    new VideoNVCodecArgument(VideoCodec.h264_nvenc, 2400),
+                                    new ThreadsArgument(false),
+                                    new ScaleArgument(outputSize),
+                                    new AudioCodecArgument(AudioCodec.Aac, audioQuality),
+                                    new OutputArgument(output)
+                                    );
+                                break;
+                            default:
+                                throw new NotImplementedException("This type is not supported yet");
+                        }
+                        break;
+                    }
+                case EncoderType.hardware_Intel:
+                    {
+                        switch(type)
+                        {
+                            case VideoType.Mp4:
+                                {
+                                    container.Add(
+                                    new InputArgument(source),
+                                    new VideoIntelCodecArgument(VideoCodec.h264_qsv, 2400),
+                                    new ThreadsArgument(false),
+                                    new ScaleArgument(outputSize),
+                                    new AudioCodecArgument(AudioCodec.Aac, audioQuality),
+                                    new OutputArgument(output)
+                                    );
+                                    break;
+                                }
+                            default:
+                                throw new NotImplementedException("This type is not supported yet");
+                        }
+
+                        break;
+                    }
             }
+            
 
             if (!RunProcess(container, output))
             {
@@ -262,7 +301,7 @@ namespace FFMpegCore.FFMPEG
                 Convert(
                    video,
                    new FileInfo(destinationPath),
-                   VideoType.Ts
+                   type: VideoType.Ts
                );
                 return destinationPath;
             }).ToList();

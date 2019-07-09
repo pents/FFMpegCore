@@ -5,7 +5,7 @@
         Mp4,
         Ogv,
         Ts,
-        WebM,
-        HWMP4
+        WebM
+
     }
 }
