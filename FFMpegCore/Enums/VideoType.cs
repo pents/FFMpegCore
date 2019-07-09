@@ -1,4 +1,4 @@
-﻿namespace FFMpegCore.Enums
+﻿namespace FFMpegCore.FFMPEG.Enums
 {
     public enum VideoType
     {

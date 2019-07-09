@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FFMpegCore.FFMPEG.Enums
+﻿namespace FFMpegCore.FFMPEG.Enums
 {
     public enum EncoderType
     {

@@ -12,6 +12,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -136,6 +137,7 @@ namespace FFMpegCore.FFMPEG
             AudioQuality audioQuality = AudioQuality.Normal,
             bool multithreaded = false)
         {
+
             FFMpegHelper.ConversionExceptionCheck(source.ToFileInfo(), output);
             FFMpegHelper.ExtensionExceptionCheck(output, FileExtension.ForType(type));
             FFMpegHelper.ConversionSizeExceptionCheck(source);
@@ -587,6 +589,6 @@ namespace FFMpegCore.FFMPEG
             OnProgress(percentage);
         }
 
-        #endregion
+#endregion
     }
 }
