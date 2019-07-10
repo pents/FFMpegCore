@@ -4,7 +4,7 @@
     {
         Software,
         Hardware_NVIDIA, // HWENC
-        hardware_Intel // QSV
+        Hardware_Intel // QSV
     }
 }
 

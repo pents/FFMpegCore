@@ -220,7 +220,7 @@ namespace FFMpegCore.FFMPEG
                         }
                         break;
                     }
-                case EncoderType.hardware_Intel:
+                case EncoderType.Hardware_Intel:
                     {
                         switch(type)
                         {
